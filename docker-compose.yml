@@ -1,0 +1,51 @@
+version: "3.8" # Specifies the Docker Compose file format version
+
+services:
+  # Service for your Rails application
+  web:
+    build: . # Builds the image using the Dockerfile in the current directory
+
+    command: bundle exec rails s -p 3001 -b '0.0.0.0'
+    # Mounts the current directory (your Rails project) to /app inside the container.
+    # This allows changes in your local code to be instantly reflected in the container.
+    volumes:
+      - .:/app
+      # Mounts a volume to store installed gems.
+      # This prevents having to download and install gems every time you rebuild the container.
+      - bundle_data:/usr/local/bundle
+    # Maps port 3001 of the host (your Windows machine) to port 3001 of the container.
+    # This way, you can access your Rails application from http://localhost:3001.
+    ports:
+      - "3001:3001"
+    # Ensures that the 'db' service starts before the 'web' service.
+    depends_on:
+      - db
+    # Environment variables for your Rails application.
+    environment:
+      RAILS_ENV: development # Sets the environment to development
+      # Database connection URL.
+      # 'db' is the name of the database service in this same docker-compose.yml file.
+      DATABASE_URL: postgres://postgres:asdqwe123@db:5432/docker-rails_development
+
+  # Service for the PostgreSQL database
+  db:
+    image: postgres:14-alpine # Uses an official PostgreSQL image. 'alpine' is lighter.
+    # Mounts a volume for persistent database data.
+    # This is crucial so your data is not lost if the container stops or is removed.
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    # Environment variables for PostgreSQL configuration.
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: asdqwe123
+      POSTGRES_DB: docker-rails_development # Name of your development database
+      # It is not necessary to expose the DB port to the host for normal development,
+      # as the 'web' application connects directly to 'db' within the Docker network.
+      # If you need to access the DB from your host (e.g., with a DB client), you can uncomment the 'ports' line.
+      # ports:
+      #   - "5432:5432"
+
+# Defines persistent volumes.
+volumes:
+  db_data: # Volume for persistent PostgreSQL data
+  bundle_data: # Volume for persistent Ruby gems (cache)

@@ -1,0 +1,14 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # El host es el nombre del servicio de la base de datos en tu docker-compose.yml
+  host: db
+  # El usuario y la contraseña deben coincidir con los definidos en docker-compose.yml para el servicio 'db'
+  username: postgres
+  password: asdqwe123
+
+development:
+  <<: *default
+  # El nombre de la base de datos debe coincidir con el definido en docker-compose.yml
+  database: docker-rails_development
