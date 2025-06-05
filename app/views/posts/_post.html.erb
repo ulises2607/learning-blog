@@ -1,17 +1,20 @@
-<div id="<%= dom_id post %>">
-  <p>
-    <strong>Title:</strong>
-    <%= post.title %>
-  </p>
-
-  <p>
-    <strong>Content:</strong>
-    <%= post.content %>
-  </p>
-
-  <p>
-    <strong>Publishd at:</strong>
-    <%= post.publishd_at %>
-  </p>
-
+<div id="<%= dom_id post %>" class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+  <div class="p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-2 leading-tight">
+      <%= link_to post.title, post, class: "hover:text-blue-600 transition-colors duration-200" %>
+    </h2>
+    <p class="text-gray-600 text-sm mb-4">Publicado: <%= post.publishd_at&.strftime("%B %d, %Y") || "Sin fecha" %></p>
+    <div class="text-gray-700 leading-relaxed mb-4">
+      <%= truncate(post.content, length: 200, separator: ' ', omission: '...') %>
+    </div>
+    <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
+      <%= link_to "Leer más", post, class: "text-blue-600 hover:text-blue-800 font-medium text-sm" %>
+      <% if user_signed_in? %>
+        <div class="flex space-x-2">
+          <%= link_to "Editar", edit_post_path(post), class: "text-green-600 hover:text-green-800 text-sm" %>
+          <%= button_to "Eliminar", post, method: :delete, data: { turbo_confirm: '¿Estás seguro de que quieres eliminar esta publicación?' }, class: "text-red-600 hover:text-red-800 text-sm" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

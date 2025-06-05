@@ -1,9 +1,8 @@
-<%= form_with(model: post) do |form| %>
+<%= form_with(model: post, class: "space-y-6") do |form| %>
   <% if post.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
+    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <p class="font-bold">Se encontraron <%= post.errors.count %> errores:</p>
+      <ul class="mt-2 list-disc list-inside">
         <% post.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,22 +10,23 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="mb-4">
+    <%= form.label :title, "Título", class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.text_field :title, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-400" %>
   </div>
 
-  <div>
-    <%= form.label :content, style: "display: block" %>
-    <%= form.textarea :content %>
+  <div class="mb-4">
+    <%= form.label :content, "Contenido", class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.text_area :content, rows: 10, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-400" %>
   </div>
 
-  <div>
-    <%= form.label :publishd_at, style: "display: block" %>
-    <%= form.datetime_field :publishd_at %>
+  <div class="mb-6">
+    <%= form.label :published_at, "Fecha de Publicación", class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.datetime_field :published_at, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-400" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="flex items-center justify-between">
+    <%= form.submit "Guardar Post", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline cursor-pointer transition duration-300 ease-in-out transform hover:scale-105" %>
+    <%= link_to "Volver", posts_path, class: "inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800" %>
   </div>
 <% end %>

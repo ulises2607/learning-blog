@@ -2,15 +2,22 @@
 
 <% content_for :title, "Posts" %>
 
-<h1>Posts</h1>
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-5xl font-extrabold text-gray-900 leading-tight">Mis Publicaciones</h1>
+    <%= link_to "Crear Nuevo Post", new_post_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105" %>
+  </div>
 
-<div id="posts">
-  <% @posts.each do |post| %>
-    <%= render post %>
-    <p>
-      <%= link_to "Show this post", post %>
-    </p>
+  <div id="posts" class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <% @posts.each do |post| %>
+      <%= render post %> <%# Esto renderiza el partial _post.html.erb %>
+    <% end %>
+  </div>
+
+  <%# Si no hay posts %>
+  <% if @posts.empty? %>
+    <div class="text-center py-12">
+      <p class="text-gray-600 text-lg">Aún no hay publicaciones. ¡Anímate a crear la primera!</p>
+    </div>
   <% end %>
 </div>
-
-<%= link_to "New post", new_post_path %>
